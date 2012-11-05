@@ -3,6 +3,9 @@ import anagram._
 
 object AnagramSolver {
     def main(args:Array[String]) ={
+        if(args.isEmpty)
+            println("Usage: anagram <your_word> <min_length>")
+            
         val inputWord = args(0)
         var minLength = 3
         
