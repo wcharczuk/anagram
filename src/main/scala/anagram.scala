@@ -3,7 +3,7 @@ import common._
 package object anagram {
     def loadDictionary = {
         val Stringstream = Option {
-          getClass.getClassLoader.getResourceAsStream("../res/dict.txt")
+          getClass.getClassLoader.getResourceAsStream("dict.txt")
         } orElse {
           common.resourceAsStreamFromSrc(List("dict.txt"))
         } getOrElse {
