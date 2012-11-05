@@ -28,6 +28,7 @@ object AnagramSolver {
             
             if(maxResults.hasValue && !maxResults.value.isEmpty)
             {
+                println("Limiting Results to: " + maxResults.value.get)
                 for(result <- StringAnagrams(inputWord.value.get, minLengthImpl).sortWith((a,b) => a.length > b.length).take(maxResults.value.get)) {
                     println(result)
                 }
