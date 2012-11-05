@@ -1,0 +1,4 @@
+<classpath>
+  <classpathentry output="target/scala-2.9.2/classes" path="src/main/scala" kind="src"></classpathentry>
+  <classpathentry path="bin" kind="output"></classpathentry>
+</classpath>
