@@ -14,30 +14,40 @@ object AnagramSolver {
     val inputWord      = parser.parameter[String]("word", "The letter collection to permute", false)
     val minLength      = parser.option[Int](List("m", "minlength"), "n", "Minimum length for a result permutation.")
     val maxResults     = parser.option[Int](List("r", "results"), "n", "Maximum number of results to print.")
+    val mustInclude    = parser.option[String](List("i", "include"), "abc", "Permutation must contain 'a' and 'b' and 'c'")
     
     def main(args:Array[String]) = {
         try
         {
             parser.parse(args)
-            
-            println("Generating Anagrams for ::> " + inputWord)
-            
             var minLengthImpl = 3
             if(minLength.hasValue && !minLength.value.isEmpty)
                 minLengthImpl = minLength.value.get
             
+            var resultSet = StringAnagrams(inputWord.value.get, minLengthImpl).sortWith((a,b) => a.length > b.length);
+            
+            if(mustInclude.hasValue && !mustInclude.value.isEmpty)
+            {
+                val mustIncludeCharacters = mustInclude.value.get
+                
+                def checkCharacters(toCheck: String, theseChars: String): Boolean = {
+                    for(c <- theseChars.toList) {
+                        if(!toCheck.contains(c)) {
+                            return false
+                        }
+                    }
+                    return true
+                }
+                resultSet = resultSet.filter(w => checkCharacters(w, mustIncludeCharacters))                
+            }
+            
             if(maxResults.hasValue && !maxResults.value.isEmpty)
             {
-                println("Limiting Results to: " + maxResults.value.get)
-                for(result <- StringAnagrams(inputWord.value.get, minLengthImpl).sortWith((a,b) => a.length > b.length).take(maxResults.value.get)) {
-                    println(result)
-                }
+                resultSet = resultSet.take(maxResults.value.get)
             }
-            else
-            {
-                for(result <- StringAnagrams(inputWord.value.get, minLengthImpl).sortWith((a,b) => a.length > b.length)) {
-                    println(result)
-                }
+            
+            for(result <- resultSet) {
+                println(result)
             }
         }
         catch {
