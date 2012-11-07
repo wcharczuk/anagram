@@ -1,35 +1,36 @@
-import common._
+//import scala.collection.mutable._
 
 package object anagram {
     def loadDictionary = {
-        val Stringstream = Option {
+        val stringStream = Option {
           getClass.getClassLoader.getResourceAsStream("dict.txt")
-        } orElse {
-          common.resourceAsStreamFromSrc(List("dict.txt"))
         } getOrElse {
-          sys.error("Could not load String list, dictionary file not found")
+            sys.error("Could not load String list, dictionary file not found")
         }
         try {
-          val s = io.Source.fromInputStream(Stringstream)
-          s.getLines.toList
-        } catch {
-          case e: Exception =>
+            val s = io.Source.fromInputStream(stringStream)
+            s.getLines.toList
+        } catch { case e: Exception =>
             println("Could not load String list: " + e)
             throw e
         } finally {
-          Stringstream.close()
+            stringStream.close()
         }
     }    
-
-    type OccurrenceCount = List[(Char, Int)]
-
-    def StringOccurrences(w: String): OccurrenceCount = {
-        w.toList.groupBy((element:Char) => element.toLower).mapValues(list => list.length).toList.sortWith((a, b) => a._1 < b._1)
+    
+    /* Computes the number of times each character occurs in a word. */
+    def StringOccurrences(w: String): Map[Char, Int] = {
+        w.toList
+            .groupBy((element:Char) => element.toLower)
+            .mapValues(list => list.length)
     }
 
-    val dict: List[String] = loadDictionary
-    lazy val StringDict: Map[OccurrenceCount, List[String]] = {
-        dict.groupBy((w:String) => StringOccurrences(w))
+    val dictionaryWords: List[String] = loadDictionary
+    lazy val StringDict: Map[Map[Char, Int], List[String]] = {
+        dictionaryWords
+            .groupBy(
+                (w:String) => StringOccurrences(w)
+            )
     }
 
     /** Returns all the anagrams of a given String. */
@@ -37,13 +38,13 @@ package object anagram {
         StringDict.get(StringOccurrences(String)).get
     }
     
-    def combinations(vals: OccurrenceCount): List[OccurrenceCount] = {
-        if(vals.isEmpty) { List(List()) }
+    def combinations(vals: Map[Char, Int]): List[Map[Char, Int]] = {
+        if(vals.isEmpty) { List(Map()) }
         else {
             for {
               list <- combinations(vals.tail)
               count <- 0 to vals.head._2
-            } yield if(count == 0) { list } else { (vals.head._1, count) :: list }
+            } yield if(count == 0) { list } else { list + (vals.head._1 -> count) }
         }
     }
     

@@ -2,4 +2,4 @@
 
 PWD=$(dirname $0)
 
-java -jar $PWD/anagram.jar $1 $2
+java -Xmx2048m -jar $PWD/anagram.jar $* 
