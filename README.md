@@ -7,7 +7,7 @@ There is a pre-built version of the program, but if you want to tink and run the
 
 To run code directly:
 
-> sbt "run [YOUR_CHARACTERS_HERE] [MIN_LENGTH]"
+> sbt "run [Normal Arguments Here]"
 
 To compile into a jar:
 
