@@ -27,17 +27,8 @@ object AnagramSolver {
             
             if(mustInclude.hasValue && !mustInclude.value.isEmpty)
             {
-                val mustIncludeCharacters = mustInclude.value.get
-                
-                def checkCharacters(toCheck: String, theseChars: String): Boolean = {
-                    for(c <- theseChars.toList) {
-                        if(!toCheck.contains(c)) {
-                            return false
-                        }
-                    }
-                    return true
-                }
-                resultSet = resultSet.filter(w => checkCharacters(w, mustIncludeCharacters))                
+                val subSet = mustInclude.value.get
+                resultSet = resultSet.filter(superSet => HasSubset(superSet, subSet))                
             }
             
             if(maxResults.hasValue && !maxResults.value.isEmpty)

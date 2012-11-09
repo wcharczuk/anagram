@@ -38,21 +38,36 @@ package object anagram {
         StringDict.get(StringOccurrences(String)).get
     }
     
-    def combinations(vals: Map[Char, Int]): List[Map[Char, Int]] = {
+    def Combinations(vals: Map[Char, Int]): List[Map[Char, Int]] = {
         if(vals.isEmpty) { List(Map()) }
         else {
             for {
-              list <- combinations(vals.tail)
+              list <- Combinations(vals.tail)
               count <- 0 to vals.head._2
             } yield if(count == 0) { list } else { list + (vals.head._1 -> count) }
         }
+    }
+    
+    def HasSubset(superSet: String, subSet: String): Boolean = {
+        val superOcc = StringOccurrences(superSet)
+        val subOcc = StringOccurrences(subSet)
+        
+        for(pair <- subOcc) {
+            if(!superOcc.contains(pair._1)) {
+                return false
+            }
+            else if(superOcc.contains(pair._1) && superOcc.get(pair._1).get < pair._2) {
+                return false
+            }
+        }
+        return true
     }
     
     def StringAnagrams(input:String, minLength: Int = 3) : List[String] = {
         if(input.isEmpty) { List(List()) }
         
         for {
-            c <- combinations(StringOccurrences(input))
+            c <- Combinations(StringOccurrences(input))
             if StringDict.contains(c)
             w <- StringDict.get(c).get
             if w.length >= minLength
