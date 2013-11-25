@@ -17,7 +17,7 @@ Typical Arguments:
 * `-i ove` : include `ove` in all output words (i.e. output words must have these letters)
 * `-m 5` : words should have a minimum of 5 letters
 * `-r 10` : only return the 10 longest words
-* `oilhderard` : the pool of letters to permute words from;
+* `oilhderard` : the pool of letters to permute words from
 
 `run -i ove -m 5 -r 10 oilhderard` would be the resulting command. 
 
